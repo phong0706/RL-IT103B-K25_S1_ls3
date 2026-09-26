@@ -1,48 +1,64 @@
-const rawFoodSubtotal = "120000";
-const rawDistance = "3.5";
-const inputVoucherCode = "GIAM20K";
+const testDataSet = [
+    { label: "Trường hợp chuẩn 1 (Số nguyên)", value: "150000" },
+    { label: "Trường hợp chuẩn 2 (Số thực)", value: "3.75" },
+    { label: "Trường hợp biên 1 (Chuỗi rỗng)", value: "" },
+    { label: "Trường hợp biên 2 (Chuỗi chứa chữ cái)", value: "100k" },
+    { label: "Trường hợp đặc biệt 1 (Giá trị null)", value: null },
+    { label: "Trường hợp đặc biệt 2 (Giá trị undefined)", value: undefined }
+];
 
-const foodSubtotal = Number(rawFoodSubtotal);
-const distance = Number(rawDistance);
+console.log("========================================================================");
+console.log("           BẢNG THỰC NGHIỆM ĐỐI CHỨNG: Number() vs Unary Plus (+)");
+console.log("========================================================================");
+console.log("Dữ liệu đầu vào                         | Number()         | Unary Plus (+)");
+console.log("------------------------------------------------------------------------");
 
-// Kiểm tra an toàn: Đảm bảo không có giá trị nào bị biến đổi thành NaN
-const isInputValid = !Number.isNaN(foodSubtotal) && !Number.isNaN(distance);
+// Test 1
+{
+    const item = testDataSet[0];
+    const resNum = Number(item.value);
+    const resUnary = +item.value;
+    console.log(`"${item.value}" (${item.label.padEnd(30, ' ')}) | ${resNum} (${typeof resNum})    | ${resUnary} (${typeof resUnary})`);
+}
 
-// Cờ hiệu 1: Kiểm tra tính hợp lệ của mã GIAM20K (Đơn món >= 100.000 VNĐ)
-const isGiam20kEligible =
-  isInputValid &&
-  foodSubtotal >= 100000 &&
-  inputVoucherCode === "GIAM20K";
+// Test 2
+{
+    const item = testDataSet[1];
+    const resNum = Number(item.value);
+    const resUnary = +item.value;
+    console.log(`"${item.value}" (${item.label.padEnd(30, ' ')}) | ${resNum} (${typeof resNum})    | ${resUnary} (${typeof resUnary})`);
+}
 
-// Cờ hiệu 2: Kiểm tra tính hợp lệ của mã FREESHIP (Cự ly <= 5 km)
-// Áp dụng cơ chế loại trừ: Chỉ xét FREESHIP nếu mã GIAM20K KHÔNG được áp dụng
-const isFreeshipEligible =
-  isInputValid &&
-  !isGiam20kEligible &&
-  distance <= 5 &&
-  inputVoucherCode === "FREESHIP";
+// Test 3
+{
+    const item = testDataSet[2];
+    const resNum = Number(item.value);
+    const resUnary = +item.value;
+    console.log(`""     (${item.label.padEnd(30, ' ')}) | ${resNum} (${typeof resNum})       | ${resUnary} (${typeof resUnary})`);
+}
 
-// Ép kiểu Boolean sang Number (true = 1, false = 0) để tính số tiền giảm giá
-const discountGiam20k = Number(isGiam20kEligible) * 20000;
-const discountFreeship = Number(isFreeshipEligible) * 15000;
+// Test 4
+{
+    const item = testDataSet[3];
+    const resNum = Number(item.value);
+    const resUnary = +item.value;
+    console.log(`"${item.value}"  (${item.label.padEnd(30, ' ')}) | ${resNum} (${typeof resNum})        | ${resUnary} (${typeof resUnary})`);
+}
 
-// Tổng tiền ưu đãi giảm giá (Đảm bảo tối đa 1 ưu đãi được kích hoạt)
-const totalDiscount = discountGiam20k + discountFreeship;
+// Test 5
+{
+    const item = testDataSet[4];
+    const resNum = Number(item.value);
+    const resUnary = +item.value;
+    console.log(`null   (${item.label.padEnd(30, ' ')}) | ${resNum} (${typeof resNum})       | ${resUnary} (${typeof resUnary})`);
+}
 
-// Quyết toán tổng tiền cuối cùng (Nếu input hỏng, tiền thanh toán = 0)
-const finalPayment = isInputValid && (foodSubtotal - totalDiscount);
+// Test 6
+{
+    const item = testDataSet[5];
+    const resNum = Number(item.value);
+    const resUnary = +item.value;
+    console.log(`undef  (${item.label.padEnd(30, ' ')}) | ${resNum} (${typeof resNum})      | ${resUnary} (${typeof resUnary})`);
+}
 
-
-console.log(`
-========= KẾT QUẢ THẨM ĐỊNH MÃ GIẢM GIÁ SHOPEEFOOD =========
-Mã voucher đã nhập    : "${inputVoucherCode}"
-Tổng tiền món ăn      : ${foodSubtotal.toLocaleString("vi-VN")} VNĐ
-Khoảng cách giao hàng : ${distance} km
-------------------------------------------------------------
-Trạng thái mã GIAM20K : ${isGiam20kEligible}
-Trạng thái mã FREESHIP: ${isFreeshipEligible}
-------------------------------------------------------------
-Tổng tiền giảm giá    : -${totalDiscount.toLocaleString("vi-VN")} VNĐ
-SỐ TIỀN THANH TOÁN    : ${finalPayment.toLocaleString("vi-VN")} VNĐ
-============================================================
-`);
+console.log("========================================================================");
